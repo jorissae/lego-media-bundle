@@ -14,13 +14,13 @@
 
     },
     "autoload": {
-        "psr-0": { "Idk\\LegoMediaBundle": "" }
+        "psr-4": { "Idk\\LegoMediaBundle\\": "src" }
     },
     "extra": {
         "symfony": {
-            "id": "01CA0KS0X2NF3C6CG95VYF14NJ",
+            "id": "01CA0KS0X2NF3C6CG95VYF14NG",
             "allow-contrib": true
         }
     },
-    "target-dir": "Idk/LegoMediaBundle"
+    "target-dir": "Idk/LegoMediaBundle/src"
 }

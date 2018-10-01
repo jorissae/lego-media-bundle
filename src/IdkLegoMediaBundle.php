@@ -1,6 +1,6 @@
 <?php
 
-namespace Idk\LegoMediaBundle;;
+namespace Idk\LegoMediaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
