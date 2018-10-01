@@ -1,0 +1,26 @@
+{
+    "name": "prestigejo/lego-media-bundle",
+    "description": "lego media bundle bundle for Symfony 4",
+    "keywords": ["Lego","bundle"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joris saenger",
+            "email": "joris.saenger@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": { "Idk\\LegoMediaBundle": "" }
+    },
+    "extra": {
+        "symfony": {
+            "id": "01CA0KS0X2NF3C6CG95VYF14NJ",
+            "allow-contrib": true
+        }
+    },
+    "target-dir": "Idk/LegoMediaBundle"
+}
