@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="{{ asset('bundles/idklegomedia/css/dropzone.css') }}">
+<style>
+    .dropzone .dz-preview .dz-image img{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script src="{{ asset('bundles/idklegomedia/js/dropzone.js') }}"></script>
+<form class="dropzone upload-dropzone" id="file_upload-{{unique_id}}" action="{{path('lego_attachment_upload',{'id': item.id, 'class': class})}}">
+    <div class="dz-default dz-message"><span>{{ 'idklegomedia.label.upload'|trans }}</span></div>
+</form>
+
+<script>
+    var _actionToDropZone = $("#file_upload-{{unique_id}}").attr('action');
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone("#file_upload-{{unique_id}}", { url: _actionToDropZone, addRemoveLinks: true, dictRemoveFile: '{{ 'idklegomedia.action.remove'|trans }}' });
+    myDropzone.on('removedfile', function(event){
+        $.ajax(event.removeUrl, {'method':'POST'});
+        $('#attach-file-' + event.id).hide();
+        $('.dz-message').hide();
+    });
+    myDropzone.on("complete", function(file) {
+        let data = JSON.parse(file.xhr.response);
+        file.id = data.id;
+        file.removeUrl = data.removeUrl;
+        if(data.thumb) {
+            myDropzone.options.thumbnail.call(myDropzone, file, data.thumb);
+        }
+    });
+    {% for f in docs %}
+    var mockFile = {
+        name: '{{ f.filename }}',
+        size: {{ f.size }},
+        removeUrl: '{{ path('lego_attachment_delete',{id:f.id}) }}',
+        id: {{ f.id }}};
+    myDropzone.options.addedfile.call(myDropzone, mockFile);
+    myDropzone.options.complete.call(myDropzone, mockFile);
+    myDropzone.options.thumbnail.call(myDropzone, mockFile, "{{ path('lego_attachment_thumb',{id:f.id}) }}");
+    {% endfor %}
+
+</script>

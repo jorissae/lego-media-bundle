@@ -1,3 +1,15 @@
 services:
+
     _defaults:
+        autowire: true
         public: false
+
+    Idk\LegoMediaBundle\Service\AttachmentManager:
+        arguments: ["@doctrine.orm.default_entity_manager", "@kernel", "@parameter_bag", "@router"]
+
+    lego.attachment.manager: '@Idk\LegoMediaBundle\Service\AttachmentManager'
+
+    lego.attachment.twig.extension:
+        class: Idk\LegoMediaBundle\Twig\AttachmentTwigExtension
+        arguments: ["@lego.attachment.manager"]
+        tags: [twig.extension]

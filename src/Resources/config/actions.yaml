@@ -1,0 +1,30 @@
+services:
+
+    _defaults:
+        autowire: true
+        public: true
+
+    lego.attachment.action.show:
+        class: Idk\LegoMediaBundle\Action\ShowAction
+        tags: [controller.service_arguments]
+        arguments: ["@lego.attachment.manager","@twig"]
+
+    lego.attachment.action.upload:
+        class: Idk\LegoMediaBundle\Action\UploadAction
+        tags: [controller.service_arguments]
+        arguments: ["@lego.attachment.manager"]
+
+    lego.attachment.action.download:
+        class: Idk\LegoMediaBundle\Action\DownloadAction
+        tags: [controller.service_arguments]
+        arguments: ["@lego.attachment.manager"]
+
+    lego.attachment.action.thumb:
+        class: Idk\LegoMediaBundle\Action\ThumbAction
+        tags: [controller.service_arguments]
+        arguments: ["@lego.attachment.manager"]
+
+    lego.attachment.action.delete:
+        class: Idk\LegoMediaBundle\Action\DeleteAction
+        tags: [controller.service_arguments]
+        arguments: ["@lego.attachment.manager"]
