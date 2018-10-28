@@ -1,0 +1,10 @@
+services:
+
+    _defaults:
+        autowire: true
+        public: false
+
+    Idk\LegoMediaBundle\Brick\Attachment:
+        shared: false
+        arguments: ['@lego.service.meta_entity_manager', '@form.factory']
+        tags: [lego.component]

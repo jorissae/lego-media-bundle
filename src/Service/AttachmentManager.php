@@ -111,7 +111,6 @@ class AttachmentManager{
 
     private function getIdentifierValue(object $entity){
         $meta = $this->em->getClassMetadata(get_class($entity));
-        $identifier = $meta->getSingleIdentifierFieldName();
         return $meta->getIdentifierValues($entity)[$meta->getSingleIdentifierFieldName()];
     }
 

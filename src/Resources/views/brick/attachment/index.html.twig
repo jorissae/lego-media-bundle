@@ -1,0 +1,25 @@
+<div class="box">
+    <div class="box-body">
+        <div class="row">
+            {%  if entity  %}
+                <div class="col-md-12">
+                    {% include component.partial('entity') with {'component':component ,'entity':entity} %}
+                </div>
+            {%  else %}
+                <div class="col-md-12">
+                    {% form_theme form theme %}
+                    <form id="{{ component.gid('form') }}" method="post" action="{{ component.url }}">
+                        {{ form_row(form[component.gid('entity_id')]) }}
+                    </form>
+                    <button data-callback="{{ component.gid('reloader') }}" data-form="{{ component.gid('form') }}" class="btn btn-primary col-md-12 jsa-send-form-ajax">{{ 'lego.action.show' | trans }}</button>
+                    <div id="{{ component.gid('content') }}"></div>
+                </div>
+                <script>
+                    function {{ component.gid('reloader') }}(elm, data){
+                        $('#{{ component.gid('content') }}').html(data.html);
+                    }
+                </script>
+            {%  endif %}
+        </div>
+    </div>
+</div>

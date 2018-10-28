@@ -1,0 +1,6 @@
+{% if entity %}
+    {% include component.partial('entity') with {'component':component ,'entity':entity} %}
+{%  else %}
+    {{ 'lego.error.entity_not_found' | trans }}
+{% endif %}
+
