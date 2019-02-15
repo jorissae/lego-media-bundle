@@ -1,0 +1,9 @@
+<ul style="margin: 0px; list-style-type: none;">
+    {% for f in docs %}
+        <li>
+            <a target="_blank" href="{{ path('lego_attachment_download',{id:f.id}) }}"><i class="{{ icon }}"></i> {{ f.filename }} </a>
+        </li>
+    {%  else %}
+        <li>{{ 'idklegomedia.none.file'|trans }}</li>
+    {% endfor %}
+</ul>

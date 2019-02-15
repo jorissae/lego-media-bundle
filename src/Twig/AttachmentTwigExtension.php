@@ -19,6 +19,8 @@ class AttachmentTwigExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('lgo_render_attachment', array($this, 'renderAttachment'), array('is_safe' => array('html'), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('lgo_list_attachment', array($this, 'listAttachment'), array('is_safe' => array('html'), 'needs_environment' => true)),
+            new \Twig_SimpleFunction('lgo_count_attachment', array($this, 'countAttachment'), array('is_safe' => array('html'), 'needs_environment' => true))
         );
     }
 
@@ -29,6 +31,22 @@ class AttachmentTwigExtension extends \Twig_Extension
             'item' => $item,
             'class' => get_class($item),
             'unique_id' => $this->manager->getUniqueId($item)
+        ]);
+    }
+
+    public function listAttachment(\Twig_Environment $env, object $item, array $options)
+    {
+        return $env->render('@IdkLegoMedia/twig_extension/list_attachment.html.twig',[
+            'docs' => $this->manager->findAll($item),
+            'icon' => $options['icon'] ?? 'fa fa-file-o'
+        ]);
+    }
+
+    public function countAttachment(\Twig_Environment $env, object $item)
+    {
+        return $env->render('@IdkLegoMedia/twig_extension/count_attachment.html.twig',[
+            'count' =>  \count($this->manager->findAll($item)),
+            'item' => $item
         ]);
     }
 

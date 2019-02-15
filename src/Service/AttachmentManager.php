@@ -18,12 +18,14 @@ class AttachmentManager{
     private $kernel;
     private $parameters;
     private $router;
+    private $attachements;
 
     public function __construct(EntityManagerInterface $em,  Kernel $kernel, ParameterBagInterface $parameters, Router $router){
         $this->em = $em;
         $this->kernel = $kernel;
         $this->parameters = $parameters;
         $this->router = $router;
+        $this->attachements = [];
     }
 
 
@@ -32,6 +34,20 @@ class AttachmentManager{
         $path = $this->kernel->getRootDir().'/../'.$this->parameters->get('lego.attachment.directory').'/';
         if(!$attachment) return $path;
         return $path . str_replace('\\','-',$attachment->getObjectClass()) . '/'.$attachment->getObjectId().'/';
+    }
+
+    public function load(string $class, array $ids): void{
+        $this->attachements[$class] = [];
+        $qb  = $this->getRepository()->createQueryBuilder('a')
+            ->where('a.objectId IN (:ids)')
+            ->andWhere('a.objectClass = :class')
+            ->setParameters(['ids'=>$ids, 'class'=> $class]);
+        foreach($qb->getQuery()->execute() as $file){
+            if(!isset($this->attachements[$class][$file->getObjectId()])){
+                $this->attachements[$class][$file->getObjectId()] = [];
+            }
+            $this->attachements[$class][$file->getObjectId()][] = $file;
+        }
     }
 
     public function hasList(){
@@ -81,8 +97,12 @@ class AttachmentManager{
     }
 
     public function findAll(object $entity): iterable{
-
-        return $this->getRepository()->findBy(['objectClass' => get_class($entity), 'objectId' => $this->getIdentifierValue($entity)]);
+        $class = $this->getClass($entity);
+        $identifier = $this->getIdentifierValue($entity);
+        if(isset($this->attachements[$class]) && isset($this->attachements[$class][$identifier])){
+            return $this->attachements[$class][$identifier];
+        }
+        return $this->getRepository()->findBy(['objectClass' => $class, 'objectId' => $identifier]);
     }
 
     public function getUniqueId(object $entity): string{
@@ -112,6 +132,11 @@ class AttachmentManager{
     private function getIdentifierValue(object $entity){
         $meta = $this->em->getClassMetadata(get_class($entity));
         return $meta->getIdentifierValues($entity)[$meta->getSingleIdentifierFieldName()];
+    }
+
+    private function getClass(object $entity){
+        $meta = $this->em->getClassMetadata(get_class($entity));
+        return $meta->getReflectionClass()->getName();
     }
 
 

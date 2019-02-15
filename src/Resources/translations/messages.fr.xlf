@@ -13,5 +13,11 @@
         <target>Déposez vos documents ici ou cliquez</target>
       </segment>
     </unit>
+    <unit id="94qpMaH" name="idklegomedia.label.upload">
+          <segment>
+            <source>idklegomedia.none.file</source>
+            <target>Aucun fichier</target>
+          </segment>
+        </unit>
   </file>
 </xliff>
