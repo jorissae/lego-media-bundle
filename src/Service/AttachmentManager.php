@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Idk\LegoMediaBundle\Service;
 
+use Doctrine\ORM\Repository\RepositoryFactory;
 use Idk\LegoMediaBundle\Entity\Attachment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -36,6 +37,10 @@ class AttachmentManager{
         return $path . str_replace('\\','-',$attachment->getObjectClass()) . '/'.$attachment->getObjectId().'/';
     }
 
+    public function getAbsolutePath(Attachment $attachment):string{
+        return $this->getUploadDir($attachment).$attachment->getPath();
+    }
+
     public function load(string $class, array $ids): void{
         $this->attachements[$class] = [];
         $qb  = $this->getRepository()->createQueryBuilder('a')
@@ -58,7 +63,7 @@ class AttachmentManager{
         $file = $this->find($id);
         $this->em->remove($file);
         $this->em->flush();
-        unlink($file->getPath());
+        unlink($this->getAbsolutePath($file));
     }
 
     public function addFile(UploadedFile $media, $class, $id): ?Attachment{
@@ -79,7 +84,7 @@ class AttachmentManager{
             $name = md5($file->getFilename().$id.microtime()).'.'.$media->getClientOriginalExtension();
             $media->move($uploadDir, $name);
 
-            $file->setPath($uploadDir.$name);
+            $file->setPath($name);
 
             $this->em->persist($file);
             $this->em->flush();
