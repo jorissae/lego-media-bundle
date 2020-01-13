@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('idk_lego_media');
+        $treeBuilder = new TreeBuilder('idk_lego_media');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
