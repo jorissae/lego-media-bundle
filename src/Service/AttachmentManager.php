@@ -32,7 +32,7 @@ class AttachmentManager{
 
     protected function getUploadDir(Attachment  $attachment = null): string
     {
-        $path = $this->kernel->getRootDir().'/../'.$this->parameters->get('lego.attachment.directory').'/';
+        $path = $this->kernel->getProjectDir().'/'.$this->parameters->get('lego.attachment.directory').'/';
         if(!$attachment) return $path;
         return $path . str_replace('\\','-',$attachment->getObjectClass()) . '/'.$attachment->getObjectId().'/';
     }
